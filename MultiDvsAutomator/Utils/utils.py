@@ -26,7 +26,7 @@ class Utils:
         self.get_token()
         time.sleep(5)
         response = requests.get(url, headers=self.header,verify=False)
-        if(response.status_code == 200):
+        if(response.status_code == 200 or response.status_code == 202):
             data = json.loads(response.text)
         else:
             print ("Error reaching the server.")
