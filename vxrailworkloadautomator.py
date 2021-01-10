@@ -63,7 +63,6 @@ class VxRaiWorkloadAutomator:
         elif isPrimary and not isExistingDvs:
             tempDvsSpec['vdsSpecs'].append(new_Dvs)
         elif not isPrimary and not isExistingDvs:
-            tempDvsSpec['vdsSpecs'].append(existingDvs)
             tempDvsSpec['vdsSpecs'].append(new_Dvs)
 
         tempDvsSpec['nsxClusterSpec'] = {
@@ -72,7 +71,7 @@ class VxRaiWorkloadAutomator:
             }
         }
         if not isPrimary and 'ipAddressPoolSpec' in nsxSpec['nsxTSpec']:
-            tempDvsSpec['nsxClusterSpec']['nsxTClusterSpec']\
+            tempDvsSpec['nsxClusterSpec']['nsxTClusterSpec'] \
                 .update({"ipAddressPoolSpec": nsxSpec["nsxTSpec"]["ipAddressPoolSpec"]})
         return tempDvsSpec
 
@@ -159,7 +158,7 @@ class VxRaiWorkloadAutomator:
                 unmanagedclusterspayload,
                 domains_user_selection[domain_index]["id"])
         clustersqueriesurl = 'https://' + self.hostname + clusters_response.headers['Location']
-        
+
         #Poll on get unmanaged clusters queries
         clusters_query_response = self.clusters.poll_queries(clustersqueriesurl)
         clusters_user_selection = list(map(lambda x: {"name": x['name']}, clusters_query_response["elements"]))
@@ -209,7 +208,6 @@ class VxRaiWorkloadAutomator:
 
         #Get the system vds
         existing_dvs_spec = self.getSystemDvs(existing_dvs_specs)
-        existing_dvs_spec_name = existing_dvs_spec['name']
         del existing_dvs_spec['niocBandwidthAllocationSpecs']
 
         dvs_selection_text = [{"name": "Create New DVS"}, {"name" : "Use Existing DVS"} ]
@@ -234,12 +232,6 @@ class VxRaiWorkloadAutomator:
             # Poll on get compatible cluster queries
             compatible_vmnic_response = self.clusters.poll_queries(compatiblevmnicqueries)
             hosts_pnics = compatible_vmnic_response["elements"][0]["hosts"]
-
-            # Get used vmnics and map them to system vds
-            if not isPrimary:
-                vmnic_host = hosts_fqdn[0]["vmNics"]
-                used_vmnics = list(filter(lambda x: x["isInUse"] == True, vmnic_host))
-                vmNics = list(map(lambda x: {"id": x['name'], "vdsName": existing_dvs_spec_name}, used_vmnics))
 
             if len(hosts_pnics) > 0 and  "vmNics" in hosts_pnics[0] and len(hosts_pnics[0]["vmNics"]) > 1:
                 is_existing_vds = False

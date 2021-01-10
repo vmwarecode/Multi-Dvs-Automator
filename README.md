@@ -12,7 +12,8 @@ Unzip the file and copy the directory MultiDvsAutomator to /home/vcf/ directory 
 > Forward and reverse DNS settings for nsxt and esxi components should be preconfigured.
 > Workload Domain must be provisioned.
 > Host configuration must have minimum two active vmNics.
-> A DHCP server or in case of non-DHCP option, Static IP Address Pool should be configured for NSX-T VTEP IP assignment.
+> A DHCP server must be configured for NSX-T VTEPS.
+
 
 
 ## Usage
@@ -72,7 +73,6 @@ root@sddc-manager [ /home/vcf/MultiDvsAutomator ]# python3 vxrailworkloadautomat
  Input root password of host esxi-10.vrack.vsphere.local
  Enter root password:
  Confirm password:
-
 
 
  Existing dvs for the discovered cluster:
@@ -139,56 +139,16 @@ root@sddc-manager [ /home/vcf/MultiDvsAutomator ]# python3 vxrailworkloadautomat
 
 
 
-Please choose IP Allocation for TEP IPs option:
- 1) DHCP (default)
- 2) Static IP Pool
- Enter your choice(number): 2
-
-
-
- Create New Static IP Pool
- Enter Pool Name: ip-pool-1
- Enter Description(Optional):Static IP Pool
-
-
-
- Subnet #1
- Enter CIDR: 10.0.6.0/24
- ** Multiple IP Ranges are supported by comma separated
- Enter IP Range: 10.0.6.20-10.0.6.50, 10.0.6.70-10.0.6.90
- Enter Gateway IP: 10.0.6.253
-
-
-
- Do you want to add another subnet ? (Enter 'yes' or 'no'): no
-
-
-
- Please input VxRail Manager's preconfigure root credentials
+ Please input VxRail Manager root credential
  Enter password:
  Confirm password:
 
 
 
- Please input VxRail Manager's preconfigured admin credentials
+ Please input VxRail Manager admin credential
  Enter username (mystic):
  Enter password:
  Confirm password:
-
-
-
- Getting thumbprints for Hosts and VxRail Manager...
-
-
-
- Please confirm SSH Thumbprint of Hosts and VxRail Manager:
- -----------FQDN--------------------------Fingerprint------------------------------Type------------
- --------------------------------------------------------------------------------------------------
- vxrm-2.vrack.vsphere.local : SHA256:PAhzGOWqwDc4gqhiedCQAmsUZ1DK9ZzBH7arcdFnFr4 : VIRTUAL_MACHINE
- esxi-7.vrack.vsphere.local : SHA256:h8MQaMdHL72wyyLtHHPKM062f+wjeGsWiL2xIlM9xRE : ESXi
- esxi-6.vrack.vsphere.local : SHA256:PWfj0syjI1H2pvOM2Pv6uuOlzxirQoNgbJaWincPXGo : ESXi
- esxi-5.vrack.vsphere.local : SHA256:azLnfzAeHSr4bPP/Y8c8yr2ElVtRi89KE3dtEkeT/M8 : ESXi
- Enter your choice ('yes' or 'no') : yes
 
 
 
@@ -228,8 +188,7 @@ Please choose IP Allocation for TEP IPs option:
         },
         "ipAddress": "10.0.0.104",
         "password": "*******",
-        "username": "root",
-        "sshThumbprint": "SHA256:azLnfzAeHSr4bPP/Y8c8yr2ElVtRi89KE3dtEkeT/M8"
+        "username": "root"
       },
       {
         "hostName": "esxi-6.vrack.vsphere.local",
@@ -247,8 +206,7 @@ Please choose IP Allocation for TEP IPs option:
         },
         "ipAddress": "10.0.0.105",
         "password": "*******",
-        "username": "root",
-        "sshThumbprint": "SHA256:PWfj0syjI1H2pvOM2Pv6uuOlzxirQoNgbJaWincPXGo"
+        "username": "root"
       },
       {
         "hostName": "esxi-7.vrack.vsphere.local",
@@ -266,35 +224,14 @@ Please choose IP Allocation for TEP IPs option:
         },
         "ipAddress": "10.0.0.106",
         "password": "*******",
-        "username": "root",
-        "sshThumbprint": "SHA256:h8MQaMdHL72wyyLtHHPKM062f+wjeGsWiL2xIlM9xRE"
+        "username": "root"
       }
     ],
     "name": "VxRail-Virtual-SAN-Cluster-WLD",
     "networkSpec": {
       "nsxClusterSpec": {
         "nsxTClusterSpec": {
-          "geneveVlanId": 0,
-          "ipAddressPoolSpec": {
-            "description": "Static IP Pool",
-            "name": "ip-pool-1",
-            "subnets": [
-              {
-                "cidr": "10.0.6.0/24",
-                "gateway": "10.0.6.253",
-                "ipAddressPoolRanges": [
-                  {
-                    "end": "10.0.6.50",
-                    "start": "10.0.6.20"
-                  },
-                  {
-                    "end": "10.0.6.90",
-                    "start": "10.0.6.70"
-                  }
-                ]
-              }
-            ]
-          }
+          "geneveVlanId": 0
         }
       },
       "vdsSpecs": [
@@ -314,31 +251,10 @@ Please choose IP Allocation for TEP IPs option:
         "credentialType": "SSH",
         "password": "*******",
         "username": "root"
-      },
-      "sshThumbprint": "SHA256:PAhzGOWqwDc4gqhiedCQAmsUZ1DK9ZzBH7arcdFnFr4"
+      }
     }
   },
   "nsxTSpec": {
-    "ipAddressPoolSpec": {
-      "description": "Static IP Pool",
-      "name": "ip-pool-1",
-      "subnets": [
-        {
-          "cidr": "10.0.6.0/24",
-          "gateway": "10.0.6.253",
-          "ipAddressPoolRanges": [
-            {
-              "end": "10.0.6.50",
-              "start": "10.0.6.20"
-            },
-            {
-              "end": "10.0.6.90",
-              "start": "10.0.6.70"
-            }
-          ]
-        }
-      ]
-    },
     "licenseKey": "--nsxTLicense--",
     "nsxManagerAdminPassword": "*******",
     "nsxManagerSpecs": [
